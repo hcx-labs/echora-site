@@ -1,4 +1,6 @@
 .galaxy { position: relative; height: 420vh; }
+/* Four tabs need less travel on a phone. */
+@media (max-width: 640px) { .galaxy { height: 300vh; } }
 .galaxy-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 .galaxy-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 /* Fade the map out behind the copy: solid up to the text's right edge in the frame, then clear. */

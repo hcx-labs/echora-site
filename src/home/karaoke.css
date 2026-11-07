@@ -60,3 +60,8 @@
   .karaoke-copy .lede, .karaoke-copy .btn { display: none; }
   .k-window { height: 42vh; }
 }
+@media (max-width: 640px) {
+  .k-window { height: clamp(220px, 30vh, 280px); }
+  /* Half the bars, so each stays at least a pixel wide. */
+  .k-bars i:nth-child(2n) { display: none; }
+}

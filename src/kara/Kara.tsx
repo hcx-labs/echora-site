@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { GithubIcon, GlowCard, HfIcon, LINKS, Reveal } from "../components/chrome";
 import "./kara.css";
@@ -23,7 +23,7 @@ function AlignStrip() {
     <div className="strip" aria-hidden>
       <div className="strip-syls">
         {blocks.map((b, i) => (
-          <span key={i} style={{ left: `${b.x}%`, width: `${b.w}%`, animationDelay: `${(b.x / 100) * 7}s` }}>
+          <span key={i} style={{ left: `${b.x}%`, width: `${b.w}%`, "--x": b.x } as CSSProperties}>
             {b.s}
           </span>
         ))}
@@ -99,6 +99,8 @@ const NORMALIZE = [
 
 const LETTERS = ["k", "o", "k", "o", "r", "o", "n", "i", "u", "t", "a"];
 const FRAMES = 44;
+// Row pitch in viewBox units: rows are taller than frames are wide, so the grid fills its panel.
+const RH = 22;
 
 function Posteriors({ decoded }: { decoded: boolean }) {
   // A plausible diagonal band of evidence with noise, and the monotonic path through it.
@@ -116,25 +118,25 @@ function Posteriors({ decoded }: { decoded: boolean }) {
     });
     const pts: string[] = [];
     LETTERS.forEach((_, r) => {
-      pts.push(`${starts[r] * 10},${r * 10 + 5}`, `${starts[r + 1] * 10},${r * 10 + 5}`);
+      pts.push(`${starts[r] * 10},${r * RH + RH / 2}`, `${starts[r + 1] * 10},${r * RH + RH / 2}`);
     });
     const activity = Array.from({ length: FRAMES }, (_, c) => (c < 3 || c === 28 ? 0.1 : 0.5 + 0.5 * Math.abs(Math.sin(c * 0.7))));
     return { cells, path: pts.join(" "), activity };
   }, []);
   return (
-    <svg viewBox={`-26 -4 ${FRAMES * 10 + 30} ${LETTERS.length * 10 + 26}`} className="post" role="img" aria-label="Letter probabilities per frame, with the decoded alignment path">
+    <svg viewBox={`-26 -4 ${FRAMES * 10 + 30} ${LETTERS.length * RH + 34}`} className="post" role="img" aria-label="Letter probabilities per frame, with the decoded alignment path">
       {LETTERS.map((l, r) => (
-        <text key={r} x={-14} y={r * 10 + 8} className="post-label">
+        <text key={r} x={-14} y={r * RH + RH / 2 + 3.5} className="post-label">
           {l}
         </text>
       ))}
       {cells.map(({ r, c, v }) => (
-        <rect key={`${r}-${c}`} x={c * 10 + 0.6} y={r * 10 + 0.6} width={8.8} height={8.8} fill="#a8cefa" opacity={0.04 + v * 0.8} />
+        <rect key={`${r}-${c}`} x={c * 10 + 0.6} y={r * RH + 0.8} width={8.8} height={RH - 1.6} rx={1} fill="#a8cefa" opacity={0.04 + v * 0.8} />
       ))}
       {activity.map((a, c) => (
-        <rect key={c} x={c * 10 + 0.6} y={LETTERS.length * 10 + 6} width={8.8} height={8} fill={a < 0.2 ? "#ff8fb1" : "#8ff0d2"} opacity={a < 0.2 ? 0.7 : a * 0.6} />
+        <rect key={c} x={c * 10 + 0.6} y={LETTERS.length * RH + 8} width={8.8} height={14} rx={1} fill={a < 0.2 ? "#ff8fb1" : "#8ff0d2"} opacity={a < 0.2 ? 0.7 : a * 0.6} />
       ))}
-      <text x={-14} y={LETTERS.length * 10 + 13} className="post-label">
+      <text x={-14} y={LETTERS.length * RH + 18.5} className="post-label">
         va
       </text>
       <polyline points={path} fill="none" stroke="#ff8fb1" strokeWidth="2.4" strokeLinejoin="miter" className={`post-path ${decoded ? "on" : ""}`} pathLength={1} />

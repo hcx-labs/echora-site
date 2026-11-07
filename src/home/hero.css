@@ -30,4 +30,10 @@
 @keyframes eq3 { from { transform: scaleY(0.2); } to { transform: scaleY(0.66); } }
 /* Rules in the stage colour cut the columns into square LED cells. */
 .eq-cells { position: absolute; inset: 0; background: repeating-linear-gradient(to top, transparent 0 9px, var(--surface) 9px 12px); pointer-events: none; }
-@media (max-width: 640px) { .hero-stage-label { display: none; } .eq-cols { gap: 2px; padding-inline: 10px; } }
+@media (max-width: 640px) {
+  .hero { padding-top: calc(64px + 40px); }
+  .hero .dots { display: none; }
+  .hero-stage { height: 240px; }
+  .hero-stage-label { display: none; }
+  .eq-cols { gap: 2px; padding-inline: 10px; }
+}
