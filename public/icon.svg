@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Echora">
+  <rect width="64" height="64" fill="#000"/>
+  <path d="M8 24h4v16H8zM16 20h4v24h-4zM24 12h4v40h-4zM32 24h4v16h-4zM40 16h4v32h-4zM48 24h4v16h-4z" fill="#a8cefa"/>
+</svg>

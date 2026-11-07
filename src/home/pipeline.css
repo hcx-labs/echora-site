@@ -1,0 +1,33 @@
+.pipe-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+.pipe-steps { position: relative; padding-left: 64px; }
+.pipe-steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(48px, 9vh, 96px); }
+.pipe-rail { position: absolute; left: 21px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+.pipe-beam { position: absolute; inset: 0; transform-origin: top; background: linear-gradient(var(--ice), var(--rose)); box-shadow: 0 0 10px rgb(168 206 250 / 0.5); }
+.pipe-steps li { position: relative; display: grid; gap: 8px; opacity: 0.38; transition: opacity 500ms ease; }
+.pipe-steps li.lit { opacity: 1; }
+.pipe-steps li p { margin: 6px 0 0; max-width: 46ch; }
+.pipe-node {
+  position: absolute; left: -64px; top: -6px; width: 44px; height: 44px;
+  display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-sm); transition: all 500ms ease;
+}
+.pipe-steps li.lit .pipe-node { color: var(--ice); border-color: rgb(168 206 250 / 0.5); box-shadow: 0 0 0 4px rgb(168 206 250 / 0.06); }
+
+.pipe-rack { position: sticky; top: 100px; display: grid; gap: 18px; }
+.pipe-rack ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.pipe-rack li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; transition: all 400ms ease; }
+.pipe-rack li:last-child { border-bottom: 0; }
+.pipe-rack .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--subtle); transition: all 400ms ease; }
+.pipe-rack .name { font-weight: 600; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pipe-rack .role { color: var(--muted); font-size: 12px; font-family: var(--mono); text-align: right; }
+.pipe-rack li.on .dot { background: var(--ice); box-shadow: 0 0 10px var(--ice); }
+.pipe-rack li.on .name { color: var(--ice-hi); }
+.pipe-rack li.kara .name { color: var(--rose); }
+.pipe-rack li.kara .name:hover { text-decoration: underline; }
+.pipe-rack li.kara.on .dot { background: var(--rose); box-shadow: 0 0 10px var(--rose); }
+.rack-note { margin: 0; font-size: 13px; }
+@media (max-width: 900px) {
+  .pipe-grid { grid-template-columns: minmax(0, 1fr); }
+  .pipe-rack { position: relative; top: 0; }
+  .pipe-rack .role { display: none; }
+}

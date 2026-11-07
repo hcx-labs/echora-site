@@ -1,0 +1,33 @@
+.hero { position: relative; padding-top: calc(64px + clamp(56px, 10vh, 112px)); padding-bottom: clamp(56px, 8vh, 96px); overflow: hidden; }
+.hero-copy { position: relative; display: grid; justify-items: center; text-align: center; gap: 22px; }
+.hero-copy .marker { margin: 0; }
+.hero-title { max-width: 17ch; }
+.hero-copy .lede { margin-inline: auto; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* The meter wall sits in a framed stage, its top edge knocked out in squares. */
+.hero-stage-wrap { margin-top: clamp(48px, 7vh, 80px); }
+.hero-stage { position: relative; height: clamp(260px, 36vh, 380px); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; }
+.hero-notches { position: absolute; inset: 0 0 auto; height: 28px; z-index: 2; pointer-events: none; }
+.hero-notches i { position: absolute; top: 0; width: 14px; height: 14px; background: var(--ink); }
+.hero-notches i:nth-child(3n) { top: 14px; }
+.hero-notches i:nth-child(3n + 1) { width: 28px; }
+.hero-stage-bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  height: 44px; padding: 0 18px; border-top: 1px solid var(--line); background: rgb(13 13 15 / 0.92); font-size: 12px; color: var(--muted); }
+.hero-stage-label { font-size: 13px; color: var(--fg); }
+
+.eq { position: absolute; inset: 28px 0 44px; }
+.eq-glow { position: absolute; inset: 40% 0 -20%; background: linear-gradient(90deg, rgb(168 206 250 / 0.3), rgb(200 180 240 / 0.2), rgb(255 143 177 / 0.3)); filter: blur(60px); opacity: 0.45; }
+.eq-cols { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 3px; padding-inline: 18px; }
+.eq-cols i { flex: 1; height: 100%; transform-origin: bottom; animation: eq0 1.2s ease-in-out infinite alternate; will-change: transform; }
+.eq-cols i.v0 { animation-name: eq0; }
+.eq-cols i.v1 { animation-name: eq1; }
+.eq-cols i.v2 { animation-name: eq2; }
+.eq-cols i.v3 { animation-name: eq3; }
+@keyframes eq0 { from { transform: scaleY(0.12); } to { transform: scaleY(0.78); } }
+@keyframes eq1 { from { transform: scaleY(0.3); } to { transform: scaleY(0.95); } }
+@keyframes eq2 { from { transform: scaleY(0.06); } to { transform: scaleY(0.5); } }
+@keyframes eq3 { from { transform: scaleY(0.2); } to { transform: scaleY(0.66); } }
+/* Rules in the stage colour cut the columns into square LED cells. */
+.eq-cells { position: absolute; inset: 0; background: repeating-linear-gradient(to top, transparent 0 9px, var(--surface) 9px 12px); pointer-events: none; }
+@media (max-width: 640px) { .hero-stage-label { display: none; } .eq-cols { gap: 2px; padding-inline: 10px; } }

@@ -1,0 +1,62 @@
+.karaoke { position: relative; }
+.karaoke-sticky { position: relative; }
+.karaoke-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+.karaoke-copy { display: grid; gap: 22px; justify-items: start; }
+
+.karaoke-stage {
+  position: relative; border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: 0 40px 120px -60px rgb(255 143 177 / 0.2);
+  overflow: hidden;
+}
+.karaoke-stage::before {
+  content: ""; position: absolute; inset: -30% -10% auto; height: 70%; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(255 143 177 / 0.16), transparent);
+  filter: blur(20px);
+}
+.stage-top { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+.stage-tab { font: 700 12px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; padding-bottom: 6px; box-shadow: 0 2px 0 var(--rose); }
+.stage-readout { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.k-window {
+  position: relative; height: clamp(320px, 52vh, 460px); overflow: hidden;
+  -webkit-mask: linear-gradient(transparent, #000 22%, #000 78%, transparent);
+  mask: linear-gradient(transparent, #000 22%, #000 78%, transparent);
+}
+.k-list { position: absolute; left: 0; right: 0; top: 50%; padding: 0 28px; display: grid; gap: 30px; text-align: center; transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+.k-line { display: grid; gap: 6px; justify-items: center; transition: opacity 500ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 500ms ease; }
+.k-line[data-state="next"] { opacity: 0.32; transform: scale(0.94); filter: blur(0.5px); }
+.k-line[data-state="past"] { opacity: 0.22; transform: scale(0.94); filter: blur(1px); }
+.k-line[data-state="active"] { opacity: 1; transform: scale(1); }
+.k-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); }
+.k-text { margin: 0; font: 650 clamp(26px, 3vw, 38px)/1.35 var(--body); letter-spacing: -0.015em; }
+.k-line.ja .k-text { font-family: var(--ja); line-height: 1.7; }
+.k-line.ko .k-text { font-family: var(--ko); }
+.k-line.ur .k-text { font-family: var(--ur); font-weight: 400; line-height: 2; font-size: clamp(28px, 3.2vw, 40px); }
+.k-translation { font-size: 15px; color: var(--muted); font-weight: 500; }
+
+/* The wipe: each syllable carries --p, the share of it already sung. */
+.syl { --p: 0%; }
+.syl .fill {
+  background: linear-gradient(90deg, #ffe0ea 0%, var(--rose) var(--p), rgb(233 240 248 / 0.38) var(--p));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+[dir="rtl"] .syl .fill { background: linear-gradient(270deg, #ffe0ea 0%, var(--rose) var(--p), rgb(233 240 248 / 0.38) var(--p)); -webkit-background-clip: text; background-clip: text; }
+.k-line[data-state="active"] .k-text { filter: drop-shadow(0 0 18px rgb(255 143 177 / 0.35)); }
+.syl rt { font-size: 0.42em; font-weight: 600; letter-spacing: 0.05em; }
+
+.k-transport { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 16px 22px 20px; border-top: 1px solid var(--line); }
+.k-clock { font-size: 12px; color: var(--fg); font-variant-numeric: tabular-nums; }
+.k-src { font-size: 11px; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.08em; }
+.k-wave { --head: 0%; position: relative; height: 34px; min-width: 0; overflow-x: clip; overflow-clip-margin: 2px; }
+.k-bars { position: absolute; inset: 0; display: flex; align-items: center; gap: clamp(1px, 0.2vw, 2px); }
+.k-bars i { flex: 1; min-width: 0; background: rgb(168 206 250 / 0.25); }
+.k-bars.played { clip-path: inset(0 calc(100% - var(--head)) 0 0); }
+.k-bars.played i { background: var(--rose); box-shadow: 0 0 6px rgb(255 143 177 / 0.6); }
+.k-head { position: absolute; top: -4px; bottom: -4px; left: var(--head); width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 12px var(--rose), 0 0 2px #fff; }
+
+@media (max-width: 900px) {
+  .karaoke-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .karaoke-copy .lede, .karaoke-copy .btn { display: none; }
+  .k-window { height: 42vh; }
+}

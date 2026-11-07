@@ -1,0 +1,35 @@
+.find-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 40px; }
+.find-grid .span-2 { grid-column: span 2; }
+.find-card { display: grid; gap: 28px; height: 100%; align-content: space-between; }
+.find-hum { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: center; }
+.find-text { display: grid; gap: 10px; }
+.find-text p { margin: 0; }
+.hum-viz { display: grid; gap: 14px; }
+.hum-viz svg { width: 100%; overflow: visible; }
+.hum-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 12px; color: var(--muted); }
+.hum-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.hum-legend span::before { content: ""; width: 16px; height: 2px; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.hum-legend .ice { color: var(--ice); }
+.hum-legend .rose { color: var(--rose); }
+
+.identify { position: relative; height: 150px; display: grid; place-items: center; color: var(--ice); }
+.identify svg { width: 40px; height: 40px; position: relative; filter: drop-shadow(0 0 12px var(--ice)); }
+.identify span { position: absolute; width: 60px; height: 60px; border: 1px solid var(--ice); animation: ping 3s cubic-bezier(0.2, 0.6, 0.3, 1) infinite; opacity: 0; }
+.identify span:nth-child(2) { animation-delay: 1s; }
+.identify span:nth-child(3) { animation-delay: 2s; }
+@keyframes ping { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(3.2); opacity: 0; } }
+
+.filters { display: flex; flex-wrap: wrap; gap: 10px; min-height: 150px; align-content: center; }
+.filters .chip:nth-child(2) { color: var(--rose); border-color: rgb(255 143 177 / 0.35); }
+.filters .chip:nth-child(odd) { animation: float 6s ease-in-out infinite; }
+.filters .chip:nth-child(even) { animation: float 7s ease-in-out infinite reverse; }
+@keyframes float { 50% { transform: translateY(-6px); } }
+
+@media (max-width: 900px) {
+  .find-grid { grid-template-columns: minmax(0, 1fr); }
+  .find-grid .span-2 { grid-column: auto; }
+  .find-hum { grid-template-columns: minmax(0, 1fr); }
+}
+
+.identify span { border-radius: var(--r); }
+.identify svg { filter: drop-shadow(0 0 8px rgb(168 206 250 / 0.6)); }

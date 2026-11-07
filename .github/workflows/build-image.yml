@@ -1,0 +1,83 @@
+name: Build Docker image
+run-name: Build Docker image from ${{ inputs.branch }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch to build (the image is tagged with its full commit SHA)
+        required: true
+        type: string
+        default: main
+      latest:
+        description: Also tag the image as latest
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-image-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    name: Build echora-web
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Validate branch name
+        env:
+          BUILD_BRANCH: ${{ inputs.branch }}
+        run: git check-ref-format "refs/heads/${BUILD_BRANCH}"
+
+      - name: Check out requested branch
+        uses: actions/checkout@v4
+        with:
+          ref: refs/heads/${{ inputs.branch }}
+          persist-credentials: false
+
+      - name: Resolve image tags
+        id: image
+        env:
+          IMAGE_OWNER: ${{ github.repository_owner }}
+          LATEST: ${{ inputs.latest }}
+        run: |
+          sha="$(git rev-parse HEAD)"
+          name="ghcr.io/${IMAGE_OWNER,,}/echora-web"
+          tags="${name}:${sha}"
+          if [ "${LATEST}" = "true" ]; then tags="${tags},${name}:latest"; fi
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+          echo "tags=${tags}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.image.outputs.tags }}
+          cache-from: type=gha,scope=echora-web
+          cache-to: type=gha,mode=max,scope=echora-web
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ steps.image.outputs.sha }}
+
+      - name: Report published image
+        env:
+          TAGS: ${{ steps.image.outputs.tags }}
+        run: echo "Published \`${TAGS}\`" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,26 @@
+.galaxy { position: relative; height: 420vh; }
+.galaxy-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.galaxy-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Fade the map out behind the copy: solid up to the text's right edge in the frame, then clear. */
+.galaxy-sticky::after { content: ""; position: absolute; inset: 0; pointer-events: none; --gx: max(0px, calc(50% - 600px));
+  background:
+    linear-gradient(90deg, rgb(5 5 6 / 0.96) 0, rgb(5 5 6 / 0.92) calc(var(--gx) + 470px), rgb(5 5 6 / 0.6) calc(var(--gx) + 620px), transparent calc(var(--gx) + 760px)),
+    linear-gradient(var(--ink), transparent 14%, transparent 86%, var(--ink)); }
+.galaxy-overlay { position: relative; z-index: 1; height: 100%; display: grid; align-items: center; pointer-events: none; }
+.galaxy-copy { display: grid; gap: 24px; max-width: 470px; pointer-events: auto; }
+.galaxy-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.galaxy-tabs button {
+  height: 38px; padding: 0 16px; cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: rgb(13 13 15 / 0.8); color: var(--muted);
+  font-weight: 600; font-size: 14px; transition: all 200ms ease;
+}
+.galaxy-tabs button:hover { color: var(--fg); border-color: var(--ice); }
+.galaxy-tabs button.on { color: var(--ink); background: var(--ice); border-color: var(--ice); }
+.galaxy-tabs button.rose.on { background: var(--rose); border-color: var(--rose); }
+.galaxy-basis { margin: 0; color: var(--muted); min-height: 5.2em; max-width: 46ch; }
+.galaxy-basis b { color: var(--fg); }
+@media (max-width: 900px) {
+  .galaxy-sticky::after { background: linear-gradient(var(--ink) 0%, rgb(5 5 6 / 0.9) 56%, transparent 66%), linear-gradient(transparent 88%, var(--ink)); }
+  .galaxy-overlay { align-items: start; padding-top: 96px; }
+  .galaxy-canvas { top: 60%; height: 40%; }
+}
