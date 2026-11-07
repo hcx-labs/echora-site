@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   image:
-    name: Build echora-web
+    name: Build echora-site
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,7 +48,7 @@ jobs:
           LATEST: ${{ inputs.latest }}
         run: |
           sha="$(git rev-parse HEAD)"
-          name="ghcr.io/${IMAGE_OWNER,,}/echora-web"
+          name="ghcr.io/${IMAGE_OWNER,,}/echora-site"
           tags="${name}:${sha}"
           if [ "${LATEST}" = "true" ]; then tags="${tags},${name}:latest"; fi
           echo "sha=${sha}" >> "$GITHUB_OUTPUT"
@@ -71,8 +71,8 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ steps.image.outputs.tags }}
-          cache-from: type=gha,scope=echora-web
-          cache-to: type=gha,mode=max,scope=echora-web
+          cache-from: type=gha,scope=echora-site
+          cache-to: type=gha,mode=max,scope=echora-site
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ steps.image.outputs.sha }}
